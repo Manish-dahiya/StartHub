@@ -130,6 +130,9 @@
     .search-btn {
         @apply size-[50px] rounded-full bg-black flex justify-center items-center !important;
     }
+    .btn {
+        @apply  rounded-lg bg-black text-white hover:bg-black-100 py-1 px-2 flex justify-center items-center !important;
+    }
 
     /* startupcard */
     .startup-card {
