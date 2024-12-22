@@ -9,13 +9,20 @@ const userSchema= mongoose.Schema({
         type: String,
         required: true,
     },
-    bio: {
+    clerkId: {
         type: String
 
     },
+    firstName:{
+        type:String
+    },
+    lastName:{
+        type:String
+    },
     ListedStartups:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"startups"
+        ref:"startups",
+        default:[]
     }
 })
 
