@@ -1,3 +1,4 @@
+import { createUser } from "@/lib/actions/user.action";
 import { clerkClient } from "@clerk/nextjs";
 import {WebhookEvent}  from "@clerk/nextjs/server"
 import { headers } from "next/headers";
@@ -56,6 +57,7 @@ export async function POST(req) {
     // Get the ID and type
     const { id } = evt.data;
     const eventType = evt.type;
+    console.log("hiiiiii",evt.type);
   
     // CREATE User in MongoDB
     if (eventType === "user.created") {
@@ -71,6 +73,7 @@ export async function POST(req) {
       };
   
       console.log(user);
+      
   
       const newUser = await createUser(user);
   
