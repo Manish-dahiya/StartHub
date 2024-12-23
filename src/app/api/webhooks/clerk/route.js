@@ -95,14 +95,11 @@
 //   }
 
 import { createUser } from "@/lib/actions/user.action";
-import { Clerk } from "@clerk/nextjs/server"; // Corrected import
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { Webhook } from "svix";
-
-// Initialize clerkClient
-const clerkClient = new Clerk({ apiKey: process.env.CLERK_SECRET_KEY});
+import { users } from "@clerk/clerk-sdk-node"; // Import users from Clerk SDK
 
 export async function POST(req) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -112,7 +109,7 @@ export async function POST(req) {
   }
 
   // Get the headers
-  const headerPayload = await headers();  // Await headers
+  const headerPayload = headers();
   const svix_id = headerPayload.get("svix-id");
   const svix_timestamp = headerPayload.get("svix-timestamp");
   const svix_signature = headerPayload.get("svix-signature");
@@ -125,23 +122,14 @@ export async function POST(req) {
   }
 
   // Get the body
-  // const payload = await req.json();
-  // const body = JSON.stringify(payload);
   const body = await req.text();
 
   // Create a new Svix instance with your secret.
   const wh = new Webhook(WEBHOOK_SECRET);
 
   let evt;
+  console.log("bhai yrrr firse kyu!!!")
 
-  console.log("Headers:", {
-    "svix-id": svix_id,
-    "svix-timestamp": svix_timestamp,
-    "svix-signature": svix_signature,
-  });
-  console.log("Received body:", body);
-
-  // Verify the payload with the headers
   try {
     evt = wh.verify(body, {
       "svix-id": svix_id,
@@ -155,12 +143,9 @@ export async function POST(req) {
     });
   }
 
-  // Get the ID and type
   const { id } = evt.data;
   const eventType = evt.type;
-  console.log("hiiiiii", evt.type);
 
-  // CREATE User in MongoDB
   if (eventType === "user.created") {
     const { id, email_addresses, first_name, last_name, username } = evt.data;
 
@@ -177,7 +162,7 @@ export async function POST(req) {
     const newUser = await createUser(user);
 
     if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
+      await users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newUser._id,
         },
@@ -188,7 +173,5 @@ export async function POST(req) {
   }
 
   console.log(`Webhook with an ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
-
   return new Response("", { status: 200 });
 }
