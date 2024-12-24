@@ -67,6 +67,7 @@ const posts=[
 export default async function Home({searchParams}) {
   const query= (await searchParams).query//search query from SearchInput
 
+
   return (
     <>
       <section className="pink_container">

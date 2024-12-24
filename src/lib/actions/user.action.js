@@ -8,6 +8,8 @@ export async function  createUser(user){
     try {
         await connectToDatabase()
         const newUser= await users.create(user)
+        console.log("from USER ACTION FILE-->",newUser)
+
         return JSON.parse(JSON.stringify(newUser))
     } catch (error) {
         console.log(error)

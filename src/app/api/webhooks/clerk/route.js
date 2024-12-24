@@ -1,11 +1,14 @@
+// import { Clerk } from '@clerk/clerk-sdk-node';
+
+// Initialize the Clerk client with the correct API key
+
 import { createUser } from "@/lib/actions/user.action";
-import { clerkClient } from "@clerk/nextjs";
 import {WebhookEvent}  from "@clerk/nextjs/server"
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import {Webhook} from "svix"
 
-
+ 
 
 export async function POST(req) {
     // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -16,9 +19,12 @@ export async function POST(req) {
         "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
       );
     }
+
+    // const clerkClient = new Clerk({ apiKey: process.env.CLERK_SECRET_KEY }); // Ensureimport { NextResponse } from "next/server";
+
   
     // Get the headers
-    const headerPayload = headers();
+    const headerPayload =await headers();
     const svix_id = headerPayload.get("svix-id");
     const svix_timestamp = headerPayload.get("svix-timestamp");
     const svix_signature = headerPayload.get("svix-signature");
@@ -31,13 +37,13 @@ export async function POST(req) {
     }
   
     // Get the body
-    const body = await req.text();
+    const payload = await req.json();
+    const body= JSON.stringify(payload)
 
     // Create a new Svix instance with your secret.
     const wh = new Webhook(WEBHOOK_SECRET);
   
     let evt;
-    console.log("bhai yrrr firse kyu!!!")
   
     // Verify the payload with the headers
     try {
@@ -56,36 +62,40 @@ export async function POST(req) {
     // Get the ID and type
     const { id } = evt.data;
     const eventType = evt.type;
-    console.log("hiiiiii",evt.type);
   
     // CREATE User in MongoDB
     if (eventType === "user.created") {
-      const { id, email_addresses, first_name, last_name, username } =
+      const { id, email_addresses, first_name, last_name } =
         evt.data;
   
       const user = {
         clerkId: id,
         email: email_addresses[0].email_address,
-        username: username,
         firstName: first_name,
         lastName: last_name,
       };
   
       console.log(user);
-      
-  
       const newUser = await createUser(user);
   
-      if (newUser) {
-        await clerkClient.users.updateUserMetadata(id, {
-          publicMetadata: {
-            userId: newUser._id,
-          },
-        });
-      }
-  
+      // if (clerkClient && clerkClient.users) {
+      //   // Now it's safe to call updateUserMetadata
+      //   await clerkClient.users.updateUserMetadata(id, {
+      //     publicMetadata: {
+      //       userId: newUser._id,
+      //     },
+      //   });
+      // } else {
+      //   console.error("Clerk client or users is not defined");
+      // }
+
       return NextResponse.json({ message: "New user created", user: newUser });
     }
+    else if(eventType=="user.deleted"){
+      return NextResponse.json({ message: " user deleted successfully",user:""});
+    }
+
+
   
     console.log(`Webhook with an ID of ${id} and type of ${eventType}`);
     console.log("Webhook body:", body);
