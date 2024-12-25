@@ -53,7 +53,7 @@ const posts=[
     title:"We Robots",
   },
   {
-    _createdAt:'Yesterday',
+    _createdAt:'today',
     views:55,
     author:{_id:1,name:"Manish"},
     _id:1,
