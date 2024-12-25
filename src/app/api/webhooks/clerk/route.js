@@ -22,6 +22,9 @@ export async function POST(req) {
 
     // const clerkClient = new Clerk({ apiKey: process.env.CLERK_SECRET_KEY }); // Ensureimport { NextResponse } from "next/server";
 
+    
+     // Create a new Svix instance with your secret.
+     const wh = new Webhook(WEBHOOK_SECRET);
   
     // Get the headers
     const headerPayload =await headers();
@@ -40,8 +43,7 @@ export async function POST(req) {
     const payload = await req.json();
     const body= JSON.stringify(payload)
 
-    // Create a new Svix instance with your secret.
-    const wh = new Webhook(WEBHOOK_SECRET);
+   
   
     let evt;
   
@@ -78,16 +80,6 @@ export async function POST(req) {
       console.log(user);
       const newUser = await createUser(user);
   
-      // if (clerkClient && clerkClient.users) {
-      //   // Now it's safe to call updateUserMetadata
-      //   await clerkClient.users.updateUserMetadata(id, {
-      //     publicMetadata: {
-      //       userId: newUser._id,
-      //     },
-      //   });
-      // } else {
-      //   console.error("Clerk client or users is not defined");
-      // }
 
       return NextResponse.json({ message: "New user created", user: newUser });
     }
