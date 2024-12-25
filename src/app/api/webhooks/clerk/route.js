@@ -46,11 +46,6 @@ export async function POST(req) {
    
   
     let evt;
-  
-    // Verify the payload with the headers
-    console.log("svix_id-->",svix_id)
-    console.log("svix_signature-->",svix_signature)
-    console.log("svix_timestamp-->",svix_timestamp)
     try {
 
       evt = wh.verify(body, {
@@ -59,7 +54,7 @@ export async function POST(req) {
         "svix-signature": svix_signature,
       });
     } catch (err) {
-      console.error(`Error verifying webhook:  svix-id-->${svix_id} svix-timestamp ---> ${svix_timestamp} svix-signature -->${svix_signature}`,err);
+      console.error(`Error verifying webhook:`,err);
       return new Response(`Error occurred` , {
         status: 400,
       });
@@ -81,9 +76,8 @@ export async function POST(req) {
         lastName: last_name,
       };
   
-      console.log(user);
       const newUser = await createUser(user);
-  
+      console.log("naya created user--> ",newUser)
 
       return NextResponse.json({ message: "New user created", user: newUser });
     }

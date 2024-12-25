@@ -7,8 +7,12 @@ import connectToDatabase from "../dbConnection"
 export async function  createUser(user){
     try {
         await connectToDatabase()
-        const newUser= await users.create(user)
-        console.log("from USER ACTION FILE-->",newUser)
+        const existingUser= await users.findOne({email:user.email})
+        if(!existingUser){
+            const newUser= await users.create(user)
+            console.log("from USER ACTION FILE-->",newUser)
+        }
+        else console.log("email already exists")
 
         return JSON.parse(JSON.stringify(newUser))
     } catch (error) {
