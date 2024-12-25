@@ -48,11 +48,10 @@ export async function POST(req) {
     let evt;
   
     // Verify the payload with the headers
+    console.log("svix_id-->",svix_id)
+    console.log("svix_signature-->",svix_signature)
+    console.log("svix_timestamp-->",svix_timestamp)
     try {
-      console.log("svix_id-->",svix_id)
-      console.log("svix_signature-->",svix_signature)
-      console.log("svix_timestamp-->",svix_timestamp)
-
 
       evt = wh.verify(body, {
         "svix-id": svix_id,
@@ -60,8 +59,8 @@ export async function POST(req) {
         "svix-signature": svix_signature,
       });
     } catch (err) {
-      console.error("Error verifying webhook:", err);
-      return new Response("Error occurred", {
+      console.error(`Error verifying webhook:  svix-id-->${svix_id} svix-timestamp ---> ${svix_timestamp} svix-signature -->${svix_signature}`,err);
+      return new Response(`Error occurred` , {
         status: 400,
       });
     }
