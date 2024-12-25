@@ -22,7 +22,7 @@ export async function POST(req) {
 
     // const clerkClient = new Clerk({ apiKey: process.env.CLERK_SECRET_KEY }); // Ensureimport { NextResponse } from "next/server";
 
-    
+
      // Create a new Svix instance with your secret.
      const wh = new Webhook(WEBHOOK_SECRET);
   
@@ -49,6 +49,11 @@ export async function POST(req) {
   
     // Verify the payload with the headers
     try {
+      console.log("svix_id-->",svix_id)
+      console.log("svix_signature-->",svix_signature)
+      console.log("svix_timestamp-->",svix_timestamp)
+
+
       evt = wh.verify(body, {
         "svix-id": svix_id,
         "svix-timestamp": svix_timestamp,
