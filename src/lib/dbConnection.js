@@ -9,7 +9,6 @@ const connectToDatabase = async () => {
   }
   // If not connected, create a new connection
   try {
-    console.log(process.env.MONGODB_URL)
     const mongoURI = process.env.MONGODB_URL; // Get your MongoDB URI from the environment variables
     console.log(mongoURI)
     if (!mongoURI) {

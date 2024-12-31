@@ -76,7 +76,7 @@ export default async function Home({searchParams}) {
         </h1>
         <p className="sub-heading !max-w-3xl">Submit ideas,Vote on Pitches ,and Get Noticed in Virtual Competitions</p>
         <SearchInput query={query}/> 
-      </section>
+      </section> 
 
     <section className="section_container">
       <p className="text-30-semibold"></p>
