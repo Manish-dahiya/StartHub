@@ -1,5 +1,4 @@
 import SearchInput from "@/components/SearchInput";
-import robot from "../../public/robot.jpg"
 import StartupCard from "@/components/StartupCard";
 
 

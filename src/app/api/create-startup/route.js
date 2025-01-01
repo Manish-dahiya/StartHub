@@ -34,6 +34,7 @@ export async function POST(req){
     const image= body.get('image');
     const pitch= body.get('pitch');
     const authorId= body.get('authorId');
+    const authorName= body.get('authorName');
 
     const arrayBuffer = await image.arrayBuffer(); // Get ArrayBuffer
     const buffer = Buffer.from(arrayBuffer);
@@ -48,7 +49,8 @@ export async function POST(req){
         category,
         image:imageForDb,
         pitch,
-        authorId:authorId
+        authorId:authorId,
+        authorName
     }
 
     const dbResponse= await startups.create(data);
@@ -73,7 +75,7 @@ export async function GET(req) {
        [ {title:query}, {"author.name":query},{category:query},{}] 
       }
     );
-    console.log("data is:",data)
+    // console.log("data is:",data)
     return NextResponse.json({message:data,success:true});
   } catch (error) {
     return NextResponse.json({message:error,success:false});

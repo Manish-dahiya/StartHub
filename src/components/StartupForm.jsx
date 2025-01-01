@@ -17,7 +17,6 @@ function StartupForm() {
     const { user } = useUser()
 
 
-
     //for title,desc,category
     const handleChange = (e) => {
         const { value, name } = e.target
@@ -48,6 +47,8 @@ function StartupForm() {
             data.append("pitch", pitch)
             //append user id 
             data.append('authorId', user?.id)
+           
+            data.append('authorName', user?.firstName)
 
             try {
                 const response= await fetch("/api/create-startup",{

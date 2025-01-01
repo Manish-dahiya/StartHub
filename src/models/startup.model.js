@@ -20,7 +20,10 @@ const startupSchema= mongoose.Schema({
     },
     authorId:{
         type:String
+    },
+    authorName:{
+        type:String
     }
-})
+},{timestamps:true})
 
 export const startups= mongoose.models.startups || mongoose.model("startups",startupSchema);
