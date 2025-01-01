@@ -69,9 +69,6 @@ function StartupForm() {
         }
     }
 
-
-
-
     return (
         <div className='max-w-[80%] md:max-w-[70%]'>
 

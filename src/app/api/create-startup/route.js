@@ -13,7 +13,7 @@ cloudinary.config({
   const uploadToCloudinary = (buffer) => {
     return new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "properties" }, // Specify folder
+        { folder: "startups" }, // Specify folder
         (error, result) => {
           if (result) resolve(result);
           else reject(error);
@@ -54,4 +54,28 @@ export async function POST(req){
     const dbResponse= await startups.create(data);
 
     return NextResponse.json({message:"submitted successfully",success:true})
+}
+
+
+export async function GET(req) {
+  await connectToDatabase();
+  try {
+    const filters = Object.fromEntries(req.nextUrl.searchParams); // Get all query params as an object
+    
+    let query={};
+    if(filters.query){
+      query=filters.query;
+    }
+
+
+    const data= await startups.find(
+      {$or:
+       [ {title:query}, {"author.name":query},{category:query},{}] 
+      }
+    );
+    console.log("data is:",data)
+    return NextResponse.json({message:data,success:true});
+  } catch (error) {
+    return NextResponse.json({message:error,success:false});
+  }
 }
