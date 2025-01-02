@@ -15,6 +15,7 @@ function StartupForm() {
     const [formData, setFormData] = useState(init);
     const [image, setImage] = useState(null);
     const { user } = useUser()
+    const [showMessage,setShowMessage]= useState("");
 
 
     //for title,desc,category
@@ -32,10 +33,18 @@ function StartupForm() {
         console.log("file uploaded");
     }
 
+    useEffect(()=>{
+        const id= setTimeout(()=>{
+            setShowMessage("");
+        },3000)
+    },[showMessage])
+
 
     const handleSubmit = async () => {
         if (formData.title == "" || formData.description == "" || formData.category == "" || user == null || image == null) {
             console.log("fill in the fields first")
+            setShowMessage("fill in the fields first");
+
             return;
         }
         else {
@@ -58,15 +67,18 @@ function StartupForm() {
                 const res= await response.json();
                 if(res.success){
                     console.log("startup listed");
+                    setFormData(init);
+                    setShowMessage("startup listed");
                 }
                 else{
                     console.log("failed in listing startup");
+                    setShowMessage("startup listing failed");
+
                 }
 
             } catch (error) {
                 console.log("error occured in sending data",error)
             }
-
         }
     }
 
@@ -105,10 +117,10 @@ function StartupForm() {
                     />
                 </div>
 
-                <div className='my-2 text-center'>
+                <div className='mt-2 mb-10 text-center'>
                     <button className='px-3 py-2 rounded-lg bg-black text-white font-bold' onClick={handleSubmit}>Submit</button>
-
-                </div>
+                    <h1 className='text-pink-600 font-bold '>{showMessage}</h1>
+                </div >
 
             </div>
 
