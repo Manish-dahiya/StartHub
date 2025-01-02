@@ -1,5 +1,14 @@
-A NEXT JS APP TO UNDERSTAND THE FUNCTIONALITY OF WEBHOOKS ,AND CRUD OPERATIONS WITH MONGODB ATLAS 
 
+
+Next.js App: Webhooks, CRUD Operations with MongoDB Atlas, and Clerk Integration
+
+Welcome to the Next.js App designed to help you understand the implementation of webhooks, perform CRUD operations using MongoDB Atlas, and integrate authentication using Clerk. This project combines modern web development tools to create a comprehensive learning experience.
+
+🚀 Features
+Webhooks: Learn how to create and handle webhooks for real-time updates and third-party integrations.
+CRUD Operations: Use MongoDB Atlas to manage database operations (Create, Read, Update, Delete).
+Authentication with Clerk: Seamless integration of authentication and user management using Clerk.
+Next.js: A React-based framework for building fast and user-friendly applications.
 HOME PAGE
 
   https://github.com/user-attachments/assets/c177b342-9812-4e1b-b3c0-4e53fa08ca88
